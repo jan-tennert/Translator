@@ -1,6 +1,9 @@
 {
-  "name": "Example Addon",
+  "name": "Translator",
   "uuid": "%uuid%",
-  "mainClass": "com.example.addon.ExampleAddon",
-  "transformerClass": "com.example.addon.ExampleAddonTransformer"
+  "mainClass": "de.jan.translator.Translator",
+  "transformerClass": "de.jan.translator.TranslatorTransformer",
+  "description": "Adds a ingame translator for multiple languages",
+  "author": "TheRealJan",
+  "icon": "https://i.imgur.com/q7tW0bF.png"
 }
