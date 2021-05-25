@@ -19,7 +19,6 @@ public class GoogleTranslator implements ITranslator {
             URL url = new URL(String.format(baseURL, translateFrom, translateTo, text));
             URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
             URL finalURL = new URL(uri.toASCIIString());
-            System.out.println(uri.toASCIIString());
             URLConnection connection = finalURL.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
             StringBuilder response = new StringBuilder();
@@ -28,7 +27,6 @@ public class GoogleTranslator implements ITranslator {
                 response.append(inputLine);
             in.close();
             String s = response.toString();
-            System.out.println(s);
             String translatedText = s.substring(s.indexOf("[[[\"") + 4, s.indexOf("\",\"")).replace("\\\"", "").replace("\\u003c", "<").replace("\\u003e", ">");
             return new Translated(text, translatedText, translateFrom, translateTo);
         } catch (IOException | URISyntaxException | NullPointerException ignored) {
