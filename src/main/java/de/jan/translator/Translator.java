@@ -121,7 +121,7 @@ public class Translator extends LabyModAddon {
             if (c.contains("<" + author + ">")) {
                 author = c.replace("<" + author + ">", "");
             } else if (c.contains(author + ":")) {
-                author = c.replace(author + ":", "");
+                author = c.replace(author + ": ", "");
             } else {
                 author = c.replace(author, "");
             }
