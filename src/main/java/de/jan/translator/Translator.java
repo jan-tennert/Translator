@@ -7,7 +7,6 @@ import net.labymod.api.LabyModAddon;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.events.client.TickEvent;
 import net.labymod.gui.elements.DropDownMenu;
-import net.labymod.gui.elements.ModTextField;
 import net.labymod.main.LabyMod;
 import net.labymod.settings.elements.DropDownElement;
 import net.labymod.settings.elements.KeyElement;
@@ -37,7 +36,7 @@ public class Translator extends LabyModAddon {
     protected void fillSettings(List<SettingsElement> list) {
         list.add(new KeyElement("Open Translator", this, null, "openTranslator", openTranslator));
 
-        DropDownMenu<Translators> translators = new DropDownMenu<Translators>(null, 0, 0 , 0, 0)
+        DropDownMenu<Translators> translators = new DropDownMenu<Translators>(null, 0, 0, 0, 0)
                 .fill(Translators.values());
         translators.setSelected(Translators.GOOGLE_TRANSLATE);
         DropDownElement<Translators> translatorsElement = new DropDownElement<>("Translator", translators);
@@ -57,9 +56,11 @@ public class Translator extends LabyModAddon {
     }
 
     public static ITranslator getTranslator() {
-        switch(translator) {
-            case GOOGLE_TRANSLATE: return new GoogleTranslator();
-            default: return new GoogleTranslator();
+        switch (translator) {
+            case GOOGLE_TRANSLATE:
+                return new GoogleTranslator();
+            default:
+                return new GoogleTranslator();
         }
     }
 }

@@ -18,7 +18,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class TranslatorScreen extends Screen {
 
@@ -59,15 +58,15 @@ public class TranslatorScreen extends Screen {
         renderBackground(matrixStack);
         this.inputText.drawTextBox(matrixStack);
         this.result.drawTextBox(matrixStack);
-        this.languageToMenu.draw(matrixStack, this.width / 2 + 100, this.height / 2 - 20, this.width / 2 + 180, this.height / 2 + 10, mouseX, mouseY );
-        this.languageFromMenu.draw(matrixStack, this.width / 2 - 160, this.height / 2 - 20, this.width / 2 - 80, this.height / 2 + 10, mouseX, mouseY );
-        this.addButton(new Button(this.width / 2 , this.height / 2 - 15, 60, 20, new StringTextComponent("Translate"), a -> {
+        this.languageToMenu.draw(matrixStack, this.width / 2 + 100, this.height / 2 - 20, this.width / 2 + 180, this.height / 2 + 10, mouseX, mouseY);
+        this.languageFromMenu.draw(matrixStack, this.width / 2 - 160, this.height / 2 - 20, this.width / 2 - 80, this.height / 2 + 10, mouseX, mouseY);
+        this.addButton(new Button(this.width / 2, this.height / 2 - 15, 60, 20, new StringTextComponent("Translate"), a -> {
             ITranslator translator = Translator.getTranslator();
             Translated translated = translator.translate(text, language.getKey(), languageFrom.getKey());
             result.setText(translated.getTranslatedText());
         }));
         this.addButton(new Button(this.width / 2 - 40, this.height / 2 + 40, 100, 20, new StringTextComponent("Copy to Clipboard"), a -> {
-            if(result.getText() != null && !result.getText().isEmpty()) {
+            if (result.getText() != null && !result.getText().isEmpty()) {
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(new StringSelection(result.getText()), null);
             }
@@ -85,7 +84,7 @@ public class TranslatorScreen extends Screen {
 
     @Override
     public boolean charTyped(char codePoint, int modifiers) {
-        if(inputText.textboxKeyTyped(codePoint, modifiers)) {
+        if (inputText.textboxKeyTyped(codePoint, modifiers)) {
             text = inputText.getText();
         }
         return super.charTyped(codePoint, modifiers);
