@@ -22,6 +22,7 @@ import java.util.Arrays;
 public class TranslatorScreen extends Screen {
 
     private ModTextField inputText;
+    private String loadValue;
     private ModTextField result;
     private String text = null;
     private Language language = Language.ENGLISH;
@@ -33,12 +34,18 @@ public class TranslatorScreen extends Screen {
         super(new StringTextComponent("Translator"));
     }
 
+    public TranslatorScreen(String loadValue) {
+        super(new StringTextComponent("Translator"));
+        this.loadValue = loadValue;
+    }
+
     @Override
     protected void init() {
         this.result = new ModTextField(0, LabyMod.getInstance().getDrawUtils().getFontRenderer(), this.width / 2 - 75, this.height / 2 + 10, 170, 20);
         result.setMaxStringLength(500);
         this.inputText = new ModTextField(0, LabyMod.getInstance().getDrawUtils().getFontRenderer(), this.width / 2 - 75, this.height / 2 - 40, 170, 20);
         inputText.setMaxStringLength(500);
+        if (loadValue != null) inputText.setText(loadValue);
         DropDownMenu<Language> languageToMenu = new DropDownMenu<Language>("Translate to", 0, 0, 0, 0)
                 .fill(Arrays.stream(Language.values()).filter(l -> l != Language.AUTO).toArray(Language[]::new));
         this.languageToMenu = new DropDownElement<Language>(null, languageToMenu);
@@ -62,6 +69,13 @@ public class TranslatorScreen extends Screen {
         this.languageFromMenu.draw(matrixStack, this.width / 2 - 160, this.height / 2 - 20, this.width / 2 - 80, this.height / 2 + 10, mouseX, mouseY);
         this.addButton(new Button(this.width / 2, this.height / 2 - 15, 60, 20, new StringTextComponent("Translate"), a -> {
             ITranslator translator = Translator.getTranslator();
+            String text = this.text;
+            if (text == null) {
+                text = this.inputText.getText();
+                if (text == null) {
+                    text = "Error while translating";
+                }
+            }
             Translated translated = translator.translate(text, language.getKey(), languageFrom.getKey());
             result.setText(translated.getTranslatedText());
         }));

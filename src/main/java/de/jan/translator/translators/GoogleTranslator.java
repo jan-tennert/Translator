@@ -3,9 +3,10 @@ package de.jan.translator.translators;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class GoogleTranslator implements ITranslator {
@@ -15,8 +16,11 @@ public class GoogleTranslator implements ITranslator {
     @Override
     public Translated translate(String text, String translateTo, String translateFrom) {
         try {
-            URL url = new URL(String.format(baseURL, translateFrom, translateTo, URLEncoder.encode(text, "UTF-8")));
-            URLConnection connection = url.openConnection();
+            URL url = new URL(String.format(baseURL, translateFrom, translateTo, text));
+            URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+            URL finalURL = new URL(uri.toASCIIString());
+            System.out.println(uri.toASCIIString());
+            URLConnection connection = finalURL.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
             StringBuilder response = new StringBuilder();
             String inputLine;
@@ -27,7 +31,7 @@ public class GoogleTranslator implements ITranslator {
             System.out.println(s);
             String translatedText = s.substring(s.indexOf("[[[\"") + 4, s.indexOf("\",\"")).replace("\\\"", "").replace("\\u003c", "<").replace("\\u003e", ">");
             return new Translated(text, translatedText, translateFrom, translateTo);
-        } catch (IOException ignored) {
+        } catch (IOException | URISyntaxException | NullPointerException ignored) {
             return new Translated("", "", "", "");
         }
     }
